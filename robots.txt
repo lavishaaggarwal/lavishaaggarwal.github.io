@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lavishaaggarwal.github.io/sitemap.xml
