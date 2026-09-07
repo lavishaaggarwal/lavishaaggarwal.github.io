@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From Videos to Conversations: Egocentric Instructions for Task Assistance</title>
+<meta name="description" content="HowToDIV: a dataset of dialogues, instructions, and egocentric videos for multimodal task assistance. ICPR 2026.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://lavishaaggarwal.github.io/howtodiv/">
+</head>
+<body>
+<main class="poster">
+<header>
+<div class="brand-row"><div class="brand">HowTo<span class="blue">D</span><span class="red">I</span><span class="green">V</span><small>Multimodal dialogue + egocentric video</small></div><a class="conference-logo" href="https://icpr2026.org/" aria-label="ICPR 2026 conference website"><img src="assets/icpr2026.svg" alt="ICPR 2026" width="160"></a><img class="google" src="assets/google-research.png" alt="Google Research"></div>
+<h1>From Videos to Conversations:<br>Egocentric Instructions for Task Assistance</h1>
+<p class="authors">Lavisha Aggarwal <sup>1,2</sup>, Vikas Bahirwani <sup>1,3</sup>, Andrea Colaco <sup>1,3</sup></p>
+<p class="affiliations"><sup>1</sup> Work done while at Google, <sup>2</sup> Amazon, <sup>3</sup> Meta</p>
+<nav aria-label="Paper resources"><a href="https://arxiv.org/pdf/2602.01038">Paper</a><a href="https://github.com/google/howtodiv">Code</a><a href="https://github.com/google/howtodiv/tree/main/data">Dataset</a><a href="poster.pdf">Poster</a><a href="https://link.springer.com/chapter/10.1007/978-3-032-31438-3_31">Springer</a></nav>
+<div class="conference"><span>28th International Conference on Pattern Recognition 2026</span></div>
+<p class="summary">HowToDIV converts single-speaker instructional videos into grounded, multi-turn conversations for egocentric task assistance.</p><nav class="section-nav" aria-label="Page sections"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#dataset">Dataset</a><a href="#results">Results</a></nav></header>
+<div class="article"><section id="overview"><h2>Overview</h2>
+<p>A tutorial can show you how to make tea. But what happens when you miss a step, reach for the wrong ingredient, or ask, “What do I do now?” A helpful AR assistant needs to see what you’re doing, follow your progress, and help you get back on track. Training one takes video-grounded conversations, and collecting those at scale is expensive.</p><p>But we already have a wealth of instructional videos! What if we could turn those one-way tutorials into back-and-forth conversations? That’s the idea behind HowToDIV. Our automatic pipeline turns tutorials into expert–novice dialogues, pairing each turn with a corresponding video clip so the conversation stays grounded in the task.</p>
+
+<div class="flow"><strong>Instructional<br>monologue video</strong><span aria-hidden="true">➜</span><strong>Grounded expert-novice dialogue<br>for multimodal task assistance</strong></div><figure class="overview-video">
+<video controls playsinline preload="metadata" aria-label="HowToDIV sample conversation: preparing tea">
+<source src="https://raw.githubusercontent.com/google/howtodiv/main/data/sample_data/output_conversation_regular_teau2av012.mp4" type="video/mp4">
+Your browser does not support embedded video. <a href="https://github.com/google/howtodiv/blob/main/data/sample_data/output_conversation_regular_teau2av012.mp4">Watch the sample video on GitHub</a>.
+</video>
+<figcaption>A sample HowToDIV conversation for preparing tea. (Original tutorial source: <a href="https://www.khoury.northeastern.edu/home/eelhami/egoper.htm">EgoPER</a>.) <a href="https://github.com/google/howtodiv/blob/main/data/sample_data/output_conversation_regular_teau2av012.mp4">View on GitHub</a></figcaption>
+</figure></section><section id="method"><h2>Method</h2>
+<p><strong>Converting Monologue tutorials into Conversation:</strong> A fully automatic, prompt-based pipeline that converts instructional videos into multi-turn conversations with turn-level video grounding. The pipeline combines three stages as shown below.</p>
+<figure><a href="assets/pipeline.png"><img src="assets/pipeline.png" alt="Pipeline: instructional video with timestamped steps or subtitles passes through instruction formation, dialogue generation, and video localization to produce grounded user-expert dialogues and user video clips."></a><figcaption>From timestamped instructions or subtitles to grounded expert–novice conversations.</figcaption></figure>
+<ol><li><strong>Instruction Formation:</strong> Recover an ordered sequence of atomic, independently executable task steps from subtitles or action annotations.</li><li><strong>Dialogue Generation:</strong> Map and transform each step to a novice query and expert response (with clarifications, errors, and corrections).</li><li><strong>Video Localization:</strong> Align each user turn with the corresponding egocentric video segment using timestamps or subtitle boundaries.</li></ol>
+</section><section id="dataset"><h2>Dataset</h2><p>Using this pipeline, we build HowToDIV: a dataset of dialogues, instructions, and egocentric videos for how-to tasks.</p>
+<div class="stats"><div><b>507</b><span>conversations</span></div><div><b>6,636</b><span>question–answer pairs</span></div><div><b>24 h</b><span>egocentric video</span></div><div><b>3</b><span>domains</span></div><div><b>9</b><span>procedural tasks</span></div></div>
+<figure><a href="assets/task-distribution.png"><img src="assets/task-distribution.png" alt="Dataset distribution across coffee, oatmeal, pinwheels, quesadilla, tea, repot plant, change tire, and jump-start car tasks; average conversation lengths range from 9.8 to 16.4 turns."></a></figure><div class="subsection"><h3>Conversational variation</h3><figure><a href="assets/conversation-variation.png"><img src="assets/conversation-variation.png" alt="User turn lengths: concise users average 3.4 words, regular users following steps 10.9 words, and regular users making errors 10.0 words. Pie chart shows the procedural task split."></a></figure></div><div class="subsection"><h3>What the conversations include</h3>
+<ul><li>Atomic Procedural steps - Each action is independently executable and queryable.</li><li>Turn-level egocentric grounding - Every turn is paired with a temporally aligned clip.</li><li>Multi-turn dialogues - Conversations model progress, questions, guidance.</li><li>Realistic human errors and corrective instructions from the expert agent.</li></ul>
+
+<div class="table-scroll" role="region" aria-label="Examples of user errors" tabindex="0"><table><caption>Examples of user errors (Adapted from: <a href="https://www.khoury.northeastern.edu/home/eelhami/egoper.htm">EgoPER</a>)</caption><thead><tr><th scope="col">Instruction</th><th scope="col">User error</th></tr></thead><tbody><tr><th scope="row">Place the tea bag in the mug</th><td>Dropped the tea bag on the floor</td></tr><tr><th scope="row">Roll the tortilla into a cylinder</th><td>Folded the tortilla in half</td></tr><tr><th scope="row">Fold the filter to create a semicircle</th><td>Tore the paper filter</td></tr></tbody></table></div><div class="table-scroll" role="region" aria-label="Examples of instruction modifications" tabindex="0"><table><caption>Examples of instruction modifications (Adapted from: <a href="https://www.khoury.northeastern.edu/home/eelhami/egoper.htm">EgoPER</a>)</caption><thead><tr><th scope="col">Instruction</th><th scope="col">Modification</th></tr></thead><tbody><tr><th scope="row">Drizzle honey in bowl</th><td>Pour sugar instead of honey</td></tr><tr><th scope="row">Stir using spoon</th><td>Stir using knife</td></tr><tr><th scope="row">Slice tortilla using knife</th><td>Slice tortilla using plate</td></tr><tr><th scope="row">Place tortilla on cutting board</th><td>Place tortilla on table</td></tr></tbody></table></div></div><div class="subsection"><h3>Dataset Quality Control</h3><ul><li>93.2% of turns judged usable.</li><li>Less than 4% of turns removed by automatic filters.</li></ul></div><div class="subsection"><h3>Comparison with existing datasets</h3><figure><a href="assets/dataset-comparison.png"><img src="assets/dataset-comparison.png" alt="Comparison of HowToDIV with NIV, HowTo100M, HoloAssist, EpicTent, EgoPER, EGTEA, Assembly101, COIN, CrossTask, YouCook2, and EPIC-KITCHENS across domain, dialogues, temporal steps, narrations, instructions, errors, and egocentric video. HowToDIV includes all listed capabilities."></a></figure><p>Our pipeline can be easily applied to existing video datasets and YouTube tutorials to scale this 100x-1000x. We invite researchers to extend HowToDIV to new tasks and domains and study how task assistance performance changes with more training data!</p></div></section><section id="results"><h2>Results</h2><h3>Explicit structure improves responses</h3><p>We benchmark two popular VLMs on the HowToDIV dataset:</p>
+<div class="table-scroll" role="region" aria-label="Task-assistance benchmark" tabindex="0"><table><caption>Task-assistance benchmark</caption><thead><tr><th scope="col">Model / input</th><th scope="col">BLEU</th><th scope="col">LLM-Judge</th><th scope="col">ROUGE-2</th><th scope="col">ROUGE-L</th></tr></thead><tbody><tr><th scope="row">Gemma-3-4B · History only</th><td>0.321</td><td>2.870</td><td>0.125</td><td>0.270</td></tr><tr><th scope="row">Gemma-3-4B · History + steps</th><td><strong>0.457</strong></td><td>4.101</td><td><strong>0.268</strong></td><td><strong>0.429</strong></td></tr><tr><th scope="row">Qwen2.5-VL-7B · History only</th><td>0.281</td><td>2.995</td><td>0.105</td><td>0.220</td></tr><tr><th scope="row">Qwen2.5-VL-7B · History + steps</th><td>0.441</td><td><strong>4.232</strong></td><td>0.199</td><td>0.356</td></tr></tbody></table></div>
+<p class="result-summary">Key takeaway: Providing explicit procedural steps raises LLM-Judge from 2.87 → 4.10 (Gemma) and 3.00 → 4.23 (Qwen).</p>
+<h3>Long-horizon reasoning remains challenging</h3><figure><a href="assets/temporal-localization.png"><img src="assets/temporal-localization.png" alt="Temporal action localization for changing a car tire: colored ground-truth and prediction segments denote procedural steps."></a></figure>
+<figure><a href="assets/long-horizon.png"><img src="assets/long-horizon.png" alt="ROUGE-L generally declines over conversation turns. Long-horizon procedural reasoning remains challenging as errors compound in later turns."></a></figure></section><section class="takeaway"><h2>Takeaway</h2><p>HowToDIV offers a new benchmark for real-time task assistance and a scalable path from abundant instructional videos to grounded conversations.</p><div><a href="https://arxiv.org/pdf/2602.01038">Paper ↗</a><a href="https://github.com/google/howtodiv">Code and Data ↗</a></div></section><section id="reuse" class="reuse"><h2>Build on HowToDIV</h2>
+<p>Start with the <a href="https://github.com/google/howtodiv#getting-started">Getting Started instructions</a> for access to the original EgoPER and NIV videos, then explore the <a href="https://github.com/google/howtodiv/tree/main/data">HowToDIV dialogues and video annotations</a>.</p>
+<h3>Citation</h3>
+<p class="citation-text">Lavisha Aggarwal, Vikas Bahirwani, and Andrea Colaco. <em>From Videos to Conversations: Egocentric Instructions for Task Assistance.</em> Pattern Recognition, ICPR 2026, LNCS 16821, pp. 463–478. Springer, 2027. <a href="https://doi.org/10.1007/978-3-032-31438-3_31">DOI</a></p>
+<details class="citation-details"><summary>BibTeX</summary><pre><code>@inproceedings{aggarwal2027videos,
+  author = {Aggarwal, Lavisha and Bahirwani, Vikas and Colaco, Andrea},
+  title = {From Videos to Conversations: Egocentric Instructions for Task Assistance},
+  booktitle = {Pattern Recognition. ICPR 2026},
+  series = {Lecture Notes in Computer Science},
+  volume = {16821},
+  pages = {463--478},
+  year = {2027},
+  publisher = {Springer, Cham},
+  doi = {10.1007/978-3-032-31438-3_31}
+}
+</code></pre></details>
+<p class="citation-download"><a href="citation.bib" download>Download BibTeX</a></p>
+</section></div>
+<footer><a href="../">← Lavisha Aggarwal</a></footer>
+</main></body></html>
